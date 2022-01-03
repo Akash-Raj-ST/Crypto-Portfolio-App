@@ -1,5 +1,5 @@
 import React ,{useState} from 'react'
-import { View, ScrollView,SafeAreaView } from 'react-native'
+import { View, ScrollView} from 'react-native'
 import { Divider } from 'react-native-elements/dist/divider/Divider'
 
 import Top from '../Components/Home/Top'
@@ -10,7 +10,7 @@ import BottomTabs from '../Components/BottomTabs'
 
 export default function Home() {
     return (
-        <SafeAreaView style={{paddingTop:20,flex:1}}>    
+        <View style={{paddingTop:20,flex:1}}>    
             <Top/>
             <Divider/>
             <ScrollView >    
@@ -20,7 +20,7 @@ export default function Home() {
             </ScrollView>
             <Divider/>
             <BottomTabs currentTab="Home"/>
-        </SafeAreaView>
+        </View>
     )
 }
 
