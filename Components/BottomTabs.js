@@ -43,12 +43,12 @@ function Tab(props){
         <TouchableOpacity
             onPress={()=>{props.setActiveTab(props.name)}}
         >
-            <AntDesign name={props.image} size={25} style={{alignSelf:'center',color:props.name===props.activeTab?'black':'#eee'}}/>
+            <AntDesign name={props.image} size={25} style={{alignSelf:'center',color:props.name===props.activeTab?'black':'grey'}}/>
             <Text 
                 style={{
                     fontSize:15,
                     fontWeight:'bold',
-                    color:props.name===props.activeTab?'black':'#eee'
+                    color:props.name===props.activeTab?'black':'grey'
                 }}
             >
             {props.name}</Text>
