@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import Assets from './screens/Assets';
 import Home from './screens/Home';
 import Login from './screens/Login';
+import Profile from './screens/Profile';
 import Register from './screens/Register';
 
 export default function App() {
@@ -10,7 +11,8 @@ export default function App() {
     // <Login/>
     // <Home/>
     // <Assets/>
-    <Register/>
+    // <Register/>
+    <Profile/>
   );
 }
 
