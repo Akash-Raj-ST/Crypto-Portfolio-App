@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import Assets from './screens/Assets';
+import History from './screens/History';
 import Home from './screens/Home';
 import Login from './screens/Login';
 import Profile from './screens/Profile';
@@ -12,7 +13,8 @@ export default function App() {
     // <Home/>
     // <Assets/>
     // <Register/>
-    <Profile/>
+    // <Profile/>
+    <History/>
   );
 }
 
