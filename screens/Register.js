@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 
-export default function Register() {
+export default function Register({navigation}) {
     return (
         <View style={styles.container}> 
             <Image source={require("../assets/images/logo.png")} style={[styles.logo,{marginBottom:10}]}/>
@@ -15,6 +15,24 @@ export default function Register() {
             <TouchableOpacity style={styles.button}>
                 <Text style={styles.buttonText}>Register</Text>
             </TouchableOpacity>
+
+            <View style={{flexDirection:'row'}}>
+                <Text style={{fontSize:18,color:'black'}}>Already have an account? </Text>
+                <TouchableOpacity
+                    onPress={()=>{
+                        navigation.navigate('Login');
+                    }}
+                >
+                    <Text 
+                        style={{
+                            textDecorationLine:'underline',
+                            fontWeight:'bold',
+                            fontSize:18,
+                            color:'black',
+                            textAlign:'center'
+                        }}> Login</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }
@@ -40,9 +58,8 @@ const styles = StyleSheet.create({
     },
     
     logo:{
-        width:100,
-        height:100,
-        marginBottom:50,
+        width:25,
+        height:25,
     },
 
     input:{

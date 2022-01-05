@@ -1,5 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, Image,StyleSheet, TouchableOpacity } from 'react-native'
+
+import {useNavigation } from '@react-navigation/native';
 import { Divider } from 'react-native-elements/dist/divider/Divider';
 
 import AntDesign from 'react-native-vector-icons/AntDesign'
@@ -16,22 +18,25 @@ export default function Top() {
             <TouchableOpacity
                 onPress={()=>{setShowPanel(!showPanel)}}
             >
-                <AntDesign name='ellipsis1' size={40} style={{position:'relative',padding:10,backgroundColor:'white'}}/>
+                <AntDesign name='ellipsis1' size={40} style={{position:'relative',padding:10}}/>
 
+                
                 {showPanel? <Panel/>:null}
-               
             </TouchableOpacity>
         </View>
     )
 }
 
 function Panel(){
+    const navigation = useNavigation();
+
+    function handleHistory(){
+        navigation.navigate('History');
+    }
+
     return(
         <View style={styles.panel}>
-            <PanelItem itemName="History1"/>
-            <PanelItem itemName="History2"/>
-            <PanelItem itemName="History3"/>
-
+            <PanelItem itemName="History" navigate={()=>handleHistory()}/>
         </View>
     )
 }
@@ -41,6 +46,9 @@ function PanelItem(props){
         <View>
             <TouchableOpacity
                 style={styles.panelItem}
+                onPress={()=>{
+                    props.navigate();
+                }}
             >
                 <Text style={{color:'white',fontSize:18}}>{props.itemName}</Text>
             </TouchableOpacity>
@@ -52,7 +60,7 @@ const styles = StyleSheet.create({
     topContainer:{
         flexDirection:'row',
         justifyContent:'space-between',
-        paddingHorizontal:15
+        paddingHorizontal:15,
     },
     assetInfo:{
         flexDirection:'row',
@@ -61,12 +69,12 @@ const styles = StyleSheet.create({
     },
     panel:{
         position:'absolute',
-        top:50,
+        top:45,
         right:20,
         backgroundColor:'black',
         width:100,
         borderRadius:10,
-        paddingVertical:10,
+        zIndex:1
     },
     panelItem:{
         padding:10,
