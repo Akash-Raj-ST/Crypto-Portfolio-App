@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 
-export default function Login() {
+export default function Login({navigation}) {
     return (
         <View style={styles.container}> 
             <Image source={require("../assets/images/logo.png")} style={styles.logo}/>
@@ -9,9 +9,30 @@ export default function Login() {
                 <InputField title="Email" placeHolder="Email"/>
                 <InputField title="Password" placeHolder="Password" type="password"/>
             </View>
-            <TouchableOpacity style={styles.button}>
+
+            <TouchableOpacity 
+                style={styles.button}
+                onPress={()=>{navigation.navigate('Home')}}
+            >
                 <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
+
+            <View>
+                <Text style={{fontSize:18,color:'black',fontWeight:'bold'}}>New here? </Text>
+                <TouchableOpacity
+                    onPress={()=>{
+                        navigation.navigate('Register');
+                    }}
+                >
+                    <Text 
+                        style={{
+                            textDecorationLine:'underline',
+                            fontWeight:'bold',
+                            fontSize:18,
+                            color:'black'
+                        }}> Register</Text>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }

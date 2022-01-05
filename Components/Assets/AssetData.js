@@ -1,6 +1,8 @@
 import React from 'react'
 import { View, Text,ScrollView, TouchableOpacity,Image } from 'react-native'
+
 import { Divider } from 'react-native-elements'
+import { useNavigation } from '@react-navigation/native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
 export default function AssetData() {
@@ -117,9 +119,13 @@ function Section(props){
 
 
 function AllData({asset}){
-    console.log(asset)
+    const navigation = useNavigation();
     return(
-        <View style={{flexDirection:'row',paddingVertical:5}}>
+        <TouchableOpacity style={{flexDirection:'row',paddingVertical:5}}
+            onPress={()=>{
+                navigation.navigate('AssetDetail');
+            }}
+        >
             <DataAsset data={asset.asset} icon={asset.icon}/>
             <Data data={asset.price}/>
             <Data data={asset.avg}/>
@@ -127,7 +133,7 @@ function AllData({asset}){
             <Data data={asset.holding}/>
             <Data data={asset.pl}/>
             <Data data={asset.return}/>
-        </View>
+        </TouchableOpacity>
     )
 }
 

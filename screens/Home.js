@@ -18,7 +18,6 @@ export default function Home() {
                 <Allotment/>
                 <Statistics/>
             </ScrollView>
-            <Divider/>
             <BottomTabs currentTab="Home"/>
         </View>
     )

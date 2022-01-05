@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text } from 'react-native'
+import { Divider } from 'react-native-elements/dist/divider/Divider'
 
 import SearchAsset from '../Components/Assets/SearchAsset'
 import AssetData from '../Components/Assets/AssetData'

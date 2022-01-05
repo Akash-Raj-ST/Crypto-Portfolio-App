@@ -1,5 +1,7 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View} from 'react-native'
+import { Divider } from 'react-native-elements/dist/divider/Divider'
+
 import BottomTabs from '../Components/BottomTabs'
 import Balance from '../Components/Profile/Balance'
 import Info from '../Components/Profile/Info'

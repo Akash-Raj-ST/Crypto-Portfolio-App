@@ -40,7 +40,7 @@ const styles =(props)=> StyleSheet.create({
         fontWeight:'bold',
         padding:25,
         textDecorationLine:'underline',
-        textDecorationColor:'black'
+        textDecorationColor:'black',
     },
     row:{
         flexDirection:'row',
