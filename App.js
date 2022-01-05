@@ -1,5 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import AssetDetail from './screens/AssetDetail';
 import Assets from './screens/Assets';
 import History from './screens/History';
 import Home from './screens/Home';
@@ -14,7 +15,8 @@ export default function App() {
     // <Assets/>
     // <Register/>
     // <Profile/>
-    <History/>
+    // <History/>
+    <AssetDetail/>
   );
 }
 
