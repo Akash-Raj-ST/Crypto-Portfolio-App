@@ -10,33 +10,48 @@ export default function Login({navigation}) {
             payload:{
                 orders:[
                     {
-                        amount:"5400",
-                        coin:0.00478,
-                        date:'12-07-2021',
-                        time:'16:05',
-                        priceApplied:2456789,
-                        token:"bitcoin"
+                        avgPrice:2456789,
+                        token:"Bitcoin",
+                        invested:24500,
+                        holding:0.0045,
+                        pl:'+3450',
+                        return:'+23'
                     },
                     {
-                        amount:"5400",
-                        coin:0.00478,
-                        date:'12-07-2021',
-                        time:'16:05',
-                        priceApplied:2456789,
-                        token:"Ethereum"
+                        avgPrice:2456789,
+                        token:"Ethereum",
+                        invested:24500,
+                        holding:0.0045,
+                        pl:'+3450',
+                        return:'+23'
+                    },
+                     {
+                        avgPrice:2456789,
+                        token:"Bitcoin",
+                        invested:24500,
+                        holding:0.0045,
+                        pl:'+3450',
+                        return:'+23'
                     },
                     {
-                        amount:"5400",
-                        coin:0.00478,
-                        date:'12-07-2021',
-                        time:'16:05',
-                        priceApplied:2456789,
-                        token:"matic"
+                        avgPrice:2456789,
+                        token:"Ethereum",
+                        invested:24500,
+                        holding:0.0045,
+                        pl:'+3450',
+                        return:'+23'
+                    },
+                    {
+                        avgPrice:2456789,
+                        token:"Matic",
+                        invested:24500,
+                        holding:0.0045,
+                        pl:'+3450',
+                        return:'+23'
                     },
                 ]
             }
         })
-        console.log(Store.getState());
     }
     return (
         <View style={styles.container}> 

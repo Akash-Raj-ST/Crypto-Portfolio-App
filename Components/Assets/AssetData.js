@@ -1,34 +1,28 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import { View, Text,ScrollView, TouchableOpacity,Image } from 'react-native'
 
 import { Divider } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import Store from '../../Redux/store'
 
 export default function AssetData() {
-    const data = [
-        {
-            asset:"Bitcoin",
-            icon:"",
-            price:"$47,45,342",
-            avg:"$26,45,785",
-            invested:"$23,000",
-            holding:"0.0012 BTC",
-            pl:"+2,532",
-            return:"25%"
-        },
-        {
-            asset:"Bitcoin",
-            icon:"",
-            price:"$47,45,342",
-            avg:"$26,45,785",
-            invested:"$23,000",
-            holding:"0.0012 BTC",
-            pl:"+2,532",
-            return:"25%"
-        },
+
+    const [data,setData] = useState(Store.getState().search);
+
+    const handleUpdate = ()=>{
+        console.log("handling")
+        setData(Store.getState().search)
+    }
+    useEffect(() => {
         
-    ]
+        const unsubscribe = Store.subscribe(handleUpdate);
+       // Specify how to clean up after this effect:
+        return ()=> {
+            unsubscribe();
+            console.log("unsubscribed!!!");
+        };
+    })
 
     function handlePrice(){
         console.log("Handling Price");
@@ -60,6 +54,7 @@ export default function AssetData() {
         handlePL,
         handleReturn
     }
+
     return (
         <ScrollView vertcal>
             <ScrollView horizontal style={{marginTop:30}}> 
@@ -126,9 +121,9 @@ function AllData({asset}){
                 navigation.navigate('AssetDetail');
             }}
         >
-            <DataAsset data={asset.asset} icon={asset.icon}/>
+            <DataAsset data={asset.token} icon={asset.icon}/>
             <Data data={asset.price}/>
-            <Data data={asset.avg}/>
+            <Data data={asset.avgPrice}/>
             <Data data={asset.invested}/>
             <Data data={asset.holding}/>
             <Data data={asset.pl}/>
@@ -164,7 +159,7 @@ function DataAsset(props){
                 width:120,
                 alignItems:'center',
                 paddingHorizontal:10,
-                justifyContent:'center'
+                justifyContent:'flex-start'
             }}
         >   
             <Image source={require("../../assets/images/bitcoin.png")}
