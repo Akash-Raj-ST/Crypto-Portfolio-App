@@ -1,7 +1,42 @@
 import React from 'react'
 import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+import Store from '../Redux/store'
 
 export default function Login({navigation}) {
+
+    function updateData(){
+        Store.dispatch({
+            type:"ADD",
+            payload:{
+                orders:[
+                    {
+                        avgPrice:2456789,
+                        token:"Bitcoin",
+                        invested:24500,
+                        holding:0.0045,
+                        pl:+50,
+                        return:+20
+                    },
+                    {
+                        avgPrice:2456789,
+                        token:"Ethereum",
+                        invested:19500,
+                        holding:0.0045,
+                        pl:+450,
+                        return:+27
+                    },
+                    {
+                        avgPrice:2456789,
+                        token:"Matic",
+                        invested:45500,
+                        holding:0.0045,
+                        pl:+345,
+                        return:+12
+                    },
+                ]
+            }
+        })
+    }
     return (
         <View style={styles.container}> 
             <Image source={require("../assets/images/logo.png")} style={styles.logo}/>
@@ -12,7 +47,7 @@ export default function Login({navigation}) {
 
             <TouchableOpacity 
                 style={styles.button}
-                onPress={()=>{navigation.navigate('Home')}}
+                onPress={()=>{updateData();navigation.navigate('Home')}}
             >
                 <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>

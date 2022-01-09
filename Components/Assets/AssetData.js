@@ -1,49 +1,61 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import { View, Text,ScrollView, TouchableOpacity,Image } from 'react-native'
 
 import { Divider } from 'react-native-elements'
 import { useNavigation } from '@react-navigation/native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import Store from '../../Redux/store'
 
 export default function AssetData() {
-    const data = [
-        {
-            asset:"Bitcoin",
-            icon:"",
-            price:"$47,45,342",
-            avg:"$26,45,785",
-            invested:"$23,000",
-            holding:"0.0012 BTC",
-            pl:"+2,532",
-            return:"25%"
-        },
-        {
-            asset:"Bitcoin",
-            icon:"",
-            price:"$47,45,342",
-            avg:"$26,45,785",
-            invested:"$23,000",
-            holding:"0.0012 BTC",
-            pl:"+2,532",
-            return:"25%"
-        },
-        
-    ]
 
-    function handlePrice(){
-        console.log("Handling Price");
+    const [data,setData] = useState(Store.getState().search);
+    const [investedSort,setInvestedSort] = useState(true);
+    const [plSort,setPLSort] = useState(true);
+    const [returnSort,setReturnSort] = useState(true);
+
+
+    const handleUpdate = ()=>{
+        console.log("handling")
+        setData(Store.getState().search)
     }
+
+    useEffect(() => {
+        
+        const unsubscribe = Store.subscribe(handleUpdate);
+       // Specify how to clean up after this effect:
+        return ()=> {
+            unsubscribe();
+            console.log("unsubscribed!!!");
+        };
+    })
+
+    
+
     function handleInvested(){
-        console.log("Handling Invested");
+ 
+        setInvestedSort(!investedSort)
+         Store.dispatch({
+            type:"SORT",
+            by:"INVESTED",
+            ascOrder:investedSort
+        })
     }
-    function handleHolding(){
-        console.log("Handling Holding");
-    }
+   
     function handlePL(){
-        console.log("Handling Profit Loss");
+        setPLSort(!plSort)
+         Store.dispatch({
+            type:"SORT",
+            by:"PL",
+            ascOrder:plSort
+        })
     }
     function handleReturn(){
-        console.log("Handling Return");
+        setReturnSort(!returnSort)
+         Store.dispatch({
+            type:"SORT",
+            by:"RETURN",
+            ascOrder:returnSort
+        })
     }
 
     // const handlers={
@@ -54,12 +66,11 @@ export default function AssetData() {
     //     handleReturn:handleReturn()
     // }
      const handlers={
-        handlePrice,
-        handleHolding,
         handleInvested,
         handlePL,
         handleReturn
     }
+
     return (
         <ScrollView vertcal>
             <ScrollView horizontal style={{marginTop:30}}> 
@@ -84,10 +95,10 @@ function Header(props){
     return(
         <View style={{flexDirection:'row',paddingVertical:10}}>
             <Section name="Asset"/>
-            <Section name="Price" handle={props.handlers.handlePrice}/>
+            <Section name="Price"/>
             <Section name="Average Buy Price"/>
             <Section name="Invested" handle={props.handlers.handleInvested}/>
-            <Section name="Holding" handle={props.handlers.handleHolding}/>
+            <Section name="Holding"/>
             <Section name="Profit/Loss" handle={props.handlers.handlePL}/>
             <Section name="Return" handle={props.handlers.handleReturn}/>
         </View>
@@ -123,12 +134,14 @@ function AllData({asset}){
     return(
         <TouchableOpacity style={{flexDirection:'row',paddingVertical:5}}
             onPress={()=>{
-                navigation.navigate('AssetDetail');
+                navigation.navigate('AssetDetail',{
+                    data:asset
+                });
             }}
         >
-            <DataAsset data={asset.asset} icon={asset.icon}/>
+            <DataAsset data={asset.token} icon={asset.icon}/>
             <Data data={asset.price}/>
-            <Data data={asset.avg}/>
+            <Data data={asset.avgPrice}/>
             <Data data={asset.invested}/>
             <Data data={asset.holding}/>
             <Data data={asset.pl}/>
@@ -164,7 +177,7 @@ function DataAsset(props){
                 width:120,
                 alignItems:'center',
                 paddingHorizontal:10,
-                justifyContent:'center'
+                justifyContent:'flex-start'
             }}
         >   
             <Image source={require("../../assets/images/bitcoin.png")}

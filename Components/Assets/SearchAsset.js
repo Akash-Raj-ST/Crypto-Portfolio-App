@@ -1,9 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { View, Text, TextInput } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
+import Store from '../../Redux/store'
 
 export default function SearchAsset() {
-    const [search,setSearch] = useState("")
+
+    const [search,setSearch] = useState("");
+
+    useEffect(() => {
+        console.log("query: "+search);
+        Store.dispatch({
+            type:"filter",
+            payload:{
+                query:search,
+                data:Store.getState().allData
+            }
+        })
+    }, [search])
+
+
     return (
         <View 
             style={{

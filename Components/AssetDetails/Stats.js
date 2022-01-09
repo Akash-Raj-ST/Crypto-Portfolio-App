@@ -2,19 +2,19 @@ import React from 'react'
 import { View, Text, StyleSheet} from 'react-native'
 import { Divider } from 'react-native-elements'
 
-export default function Stats() {
+export default function Stats({data}) {
     return (
         <View>
             <Text style={styles().heading}>Stats</Text>
 
             <View>
-                <Row stat="Current P/L" value="+$12,500"/>
+                <Row stat="Current P/L" value={data.pl>=0?"+"+data.pl.toString():"-"+data.pl.toString()}/>
                 <Row stat="All time profit" value="+$15,500"/>
                 <Row stat="All time Loss" value="-$3,500"/>
                 <Row stat="P/L booked" value="+$3,500"/>
-                <Row stat="Average buy price" value="$23,57,500"/>
-                <Row stat="Holding" value="0.00345BTC"/>
-                <Row stat="Returns" value="+24%"/>
+                <Row stat="Average buy price" value={data.avgPrice}/>
+                <Row stat="Holding" value={data.holding}/>
+                <Row stat="Returns" value={data.return>=0?"+"+data.return.toString():"-"+data.return.toString()}/>
             </View>
         </View>
     )

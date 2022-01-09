@@ -6,14 +6,14 @@ import { Divider } from 'react-native-elements/dist/divider/Divider';
 
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
-export default function Top() {
+export default function Top({token}) {
     const [showPanel,setShowPanel] = useState(false);
 
     return (
         <View style={[styles.topContainer,{paddingTop:50}]}>
             <View style={styles.assetInfo}>
                 <Image source={require("../../assets/images/bitcoin.png")} style={{width:40,height:40}}/>
-                <Text style={{fontWeight:'bold',fontSize:20}}>Bitcoin</Text>
+                <Text style={{fontWeight:'bold',fontSize:20}}>{token}</Text>
             </View>
             <TouchableOpacity
                 onPress={()=>{setShowPanel(!showPanel)}}
