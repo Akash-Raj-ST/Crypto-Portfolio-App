@@ -9,6 +9,14 @@ export function allDataReducer(state=[],action){
     }
 }
 
+function ascSort(a,b){
+    return (a > b) ? 1 : ((b > a) ? -1 : 0);
+}
+
+function desSort(a,b){
+    return (a < b) ? 1 : ((b < a) ? -1 : 0);
+}
+
 export function searchReducer(state=[],action){
     switch(action.type){
         case "ADD":
@@ -19,22 +27,24 @@ export function searchReducer(state=[],action){
             const load = action.payload.data
             return load.filter((order)=>order.token.includes(query)==true);
 
-        case "sort":
-            switch(action.type.by){
-                case "price":
-                    return state.sort((a,b)=>{a.price-b.price});
+        case "SORT":
+            switch(action.by){
 
-                case "amount":
-                    return state.sort((a,b)=>{a.amount-b.amount});
+                case "INVESTED":
+                    if(action.ascOrder)
+                        return state.sort((a,b)=>ascSort(a.invested,b.invested));
+                    return state.sort((a,b)=>desSort(a.invested,b.invested));
 
-                case "time":
-                    return state.sort((a,b)=>{a.time-b.time});
 
-                case "pl":
-                    return state.sort((a,b)=>{a.pl-b.pl});
+                case "PL":
+                    if(action.ascOrder)
+                        return state.sort((a,b)=>ascSort(a.pl,b.pl));
+                    return state.sort((a,b)=>desSort(a.pl,b.pl));
 
-                case "return":
-                    return state.sort((a,b)=>{a.return-b.return});
+                case "RETURN":
+                    if(action.ascOrder)
+                        return state.sort((a,b)=>ascSort(a.return,b.return));
+                    return state.sort((a,b)=>desSort(a.return,b.return));
 
             }
         default:

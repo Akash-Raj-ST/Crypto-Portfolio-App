@@ -16,11 +16,11 @@ export default function Tabs(){
                 paddingHorizontal:10,
             }}>
            <Tab tab="Order" activeTab={activeTab} setActiveTab={setActiveTab}/>
-           <Tab tab="Transaction" activeTab={activeTab} setActiveTab={setActiveTab}/>
         </View>
     )
 }
-
+        
+        // <Tab tab="Transaction" activeTab={activeTab} setActiveTab={setActiveTab}/>
 function Tab(props){
     return(
         <TouchableOpacity 

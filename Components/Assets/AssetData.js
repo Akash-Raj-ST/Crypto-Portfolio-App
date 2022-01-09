@@ -9,11 +9,16 @@ import Store from '../../Redux/store'
 export default function AssetData() {
 
     const [data,setData] = useState(Store.getState().search);
+    const [investedSort,setInvestedSort] = useState(true);
+    const [plSort,setPLSort] = useState(true);
+    const [returnSort,setReturnSort] = useState(true);
+
 
     const handleUpdate = ()=>{
         console.log("handling")
         setData(Store.getState().search)
     }
+
     useEffect(() => {
         
         const unsubscribe = Store.subscribe(handleUpdate);
@@ -24,20 +29,33 @@ export default function AssetData() {
         };
     })
 
-    function handlePrice(){
-        console.log("Handling Price");
-    }
+    
+
     function handleInvested(){
-        console.log("Handling Invested");
+ 
+        setInvestedSort(!investedSort)
+         Store.dispatch({
+            type:"SORT",
+            by:"INVESTED",
+            ascOrder:investedSort
+        })
     }
-    function handleHolding(){
-        console.log("Handling Holding");
-    }
+   
     function handlePL(){
-        console.log("Handling Profit Loss");
+        setPLSort(!plSort)
+         Store.dispatch({
+            type:"SORT",
+            by:"PL",
+            ascOrder:plSort
+        })
     }
     function handleReturn(){
-        console.log("Handling Return");
+        setReturnSort(!returnSort)
+         Store.dispatch({
+            type:"SORT",
+            by:"RETURN",
+            ascOrder:returnSort
+        })
     }
 
     // const handlers={
@@ -48,8 +66,6 @@ export default function AssetData() {
     //     handleReturn:handleReturn()
     // }
      const handlers={
-        handlePrice,
-        handleHolding,
         handleInvested,
         handlePL,
         handleReturn
@@ -79,10 +95,10 @@ function Header(props){
     return(
         <View style={{flexDirection:'row',paddingVertical:10}}>
             <Section name="Asset"/>
-            <Section name="Price" handle={props.handlers.handlePrice}/>
+            <Section name="Price"/>
             <Section name="Average Buy Price"/>
             <Section name="Invested" handle={props.handlers.handleInvested}/>
-            <Section name="Holding" handle={props.handlers.handleHolding}/>
+            <Section name="Holding"/>
             <Section name="Profit/Loss" handle={props.handlers.handlePL}/>
             <Section name="Return" handle={props.handlers.handleReturn}/>
         </View>
@@ -118,7 +134,9 @@ function AllData({asset}){
     return(
         <TouchableOpacity style={{flexDirection:'row',paddingVertical:5}}
             onPress={()=>{
-                navigation.navigate('AssetDetail');
+                navigation.navigate('AssetDetail',{
+                    data:asset
+                });
             }}
         >
             <DataAsset data={asset.token} icon={asset.icon}/>

@@ -14,40 +14,24 @@ export default function Login({navigation}) {
                         token:"Bitcoin",
                         invested:24500,
                         holding:0.0045,
-                        pl:'+3450',
-                        return:'+23'
+                        pl:+50,
+                        return:+20
                     },
                     {
                         avgPrice:2456789,
                         token:"Ethereum",
-                        invested:24500,
+                        invested:19500,
                         holding:0.0045,
-                        pl:'+3450',
-                        return:'+23'
-                    },
-                     {
-                        avgPrice:2456789,
-                        token:"Bitcoin",
-                        invested:24500,
-                        holding:0.0045,
-                        pl:'+3450',
-                        return:'+23'
-                    },
-                    {
-                        avgPrice:2456789,
-                        token:"Ethereum",
-                        invested:24500,
-                        holding:0.0045,
-                        pl:'+3450',
-                        return:'+23'
+                        pl:+450,
+                        return:+27
                     },
                     {
                         avgPrice:2456789,
                         token:"Matic",
-                        invested:24500,
+                        invested:45500,
                         holding:0.0045,
-                        pl:'+3450',
-                        return:'+23'
+                        pl:+345,
+                        return:+12
                     },
                 ]
             }
