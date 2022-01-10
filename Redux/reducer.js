@@ -2,7 +2,7 @@
 
 export function allDataReducer(state=[],action){
     if(action.type=="ADD"){
-        return [...state,...action.payload.orders];
+        return [...action.payload.orders];
     }
     else{
         return state;
