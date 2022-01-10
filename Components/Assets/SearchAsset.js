@@ -8,12 +8,13 @@ export default function SearchAsset() {
     const [search,setSearch] = useState("");
 
     useEffect(() => {
+        console.log(Store.getState().search)
         console.log("query: "+search);
         Store.dispatch({
             type:"filter",
             payload:{
                 query:search,
-                data:Store.getState().allData
+                data:Store.getState().allAsset
             }
         })
     }, [search])
