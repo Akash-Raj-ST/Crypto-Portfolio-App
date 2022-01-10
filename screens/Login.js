@@ -1,9 +1,71 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+
 import Store from '../Redux/store'
+import db from '../firebase'
+import { getDoc, doc} from 'firebase/firestore/lite'
 
 export default function Login({navigation}) {
 
+    const init = async()=>{
+        const userID = 'WFLOPtx94SwlicYt2sjF';
+
+        const docRef = doc(db, "User", userID);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+
+            const orders= docSnap.data().orders;
+            updateData(orders);
+
+            //processing data for allAssetStore
+            const processedData = [];
+            orders.forEach((order)=>{
+                var element = processedData.find((el)=>el.currency===order.currency);
+
+                if(element){
+                    element.total_quantity += order.quantity;
+                    element.total_amount += order.total_amount;
+                    element.avg_price = element.total_amount/element.total_quantity;
+                }else{
+                    var item = {
+                        currency:order.currency,
+                        total_quantity:order.total_quantity,
+                        total_amount:order.total_amount,
+                        avg_price:order.total_quantity/order.total_amount
+                    }
+                    processedData.push(item);
+                }
+            })
+
+            updateData2(processedData);
+        } else {
+            console.log("No such document!");
+        }
+    }
+    
+    function updateData(orders){
+        Store.dispatch({
+            type:"ADD_ORDER",
+            payload:{
+                orders:orders
+            }
+        })
+    }
+
+    function updateData2(assets){
+        Store.dispatch({
+            type:"ADD_ASSET",
+            payload:{
+                assets:assets
+            }
+        })
+        console.log(Store.getState())
+    }
+
+    // useEffect(()=>{
+    //     init();
+    // },[])
     
     return (
         <View style={styles.container}> 
@@ -16,9 +78,8 @@ export default function Login({navigation}) {
             <TouchableOpacity 
                 style={styles.button}
                 onPress={()=>{
-                        navigation.navigate('Home',{
-                            userID : 'WFLOPtx94SwlicYt2sjF'
-                        })
+                        init();
+                        navigation.navigate('Home')
                     }}
             >
                 <Text style={styles.buttonText}>Login</Text>

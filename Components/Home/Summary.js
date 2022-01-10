@@ -1,7 +1,25 @@
-import {useState} from 'react'
+import {useState,useEffect} from 'react'
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native'
 
+import Store from '../../Redux/store'
+
 export default function Summary(){
+
+    const [deposits,setDeposits] = useState(0);
+    
+    useEffect(() => {
+        const orders = Store.getState().allAsset;
+
+        var sum = 0;
+
+        if(orders)
+        orders.forEach((order)=>{
+            sum += order.total_amount;
+        })
+
+        setDeposits(sum);
+    }, [])
+
     return(
         <View>
             <Text style={styles.heading}>Summary</Text>
@@ -9,7 +27,7 @@ export default function Summary(){
                 <Image source={require("../../assets/images/summary-logo-dark.png")}/>
                 <View>             
                     <Text style={styles.content}>Deposit</Text>
-                    <Text style={styles.content}>$12,500</Text>
+                    <Text style={styles.content}>${parseInt(deposits)}</Text>
                 </View>
                 <View>             
                     <Text style={styles.content}>Returns</Text>
