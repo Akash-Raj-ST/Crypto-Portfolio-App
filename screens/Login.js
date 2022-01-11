@@ -60,6 +60,14 @@ export default function Login({navigation}) {
                 assets:assets
             }
         })
+        
+        Store.dispatch({
+            type:"filter",
+            payload:{
+                query:'',
+                data:Store.getState().allAsset
+            }
+    })
         console.log(Store.getState())
     }
 
@@ -78,8 +86,8 @@ export default function Login({navigation}) {
             <TouchableOpacity 
                 style={styles.button}
                 onPress={()=>{
-                        init();
-                        navigation.navigate('Home')
+                        init().then(()=>
+                        navigation.navigate('Home'))
                     }}
             >
                 <Text style={styles.buttonText}>Login</Text>

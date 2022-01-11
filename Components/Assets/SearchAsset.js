@@ -9,7 +9,6 @@ export default function SearchAsset() {
 
     useEffect(() => {
         console.log(Store.getState().search)
-        console.log("query: "+search);
         Store.dispatch({
             type:"filter",
             payload:{
@@ -17,6 +16,8 @@ export default function SearchAsset() {
                 data:Store.getState().allAsset
             }
         })
+        console.log("search redux")
+        console.log(Store.getState().search)
     }, [search])
 
 
