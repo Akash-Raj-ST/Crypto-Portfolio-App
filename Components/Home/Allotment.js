@@ -34,9 +34,9 @@ export default function Allotment() {
 
         const total = investedAmount.bitcoin + investedAmount.ethereum + investedAmount.others;
 
-        allocation.bitcoin = (investedAmount.bitcoin/total)*100;
-        allocation.ethereum = (investedAmount.ethereum/total)*100;
-        allocation.others = (investedAmount.others/total)*100;
+        allocation.bitcoin = ((investedAmount.bitcoin/total)*100).toPrecision(4);
+        allocation.ethereum = ((investedAmount.ethereum/total)*100).toPrecision(4);
+        allocation.others = ((investedAmount.others/total)*100).toPrecision(4);
 
         setAllotment(allocation);
     },[])

@@ -6,7 +6,8 @@ import db from '../firebase'
 import { getDoc, doc} from 'firebase/firestore/lite'
 
 export default function Login({navigation}) {
-
+    const debug = false;
+    
     const init = async()=>{
         const userID = 'WFLOPtx94SwlicYt2sjF';
 
@@ -27,12 +28,21 @@ export default function Login({navigation}) {
                     element.total_quantity += order.quantity;
                     element.total_amount += order.total_amount;
                     element.avg_price = element.total_amount/element.total_quantity;
+                    if(debug){
+                        console.log("Avg Price:")
+                        console.log(element.total_amount+"/"+element.total_quantity)
+                    }
                 }else{
                     var item = {
                         currency:order.currency,
                         total_quantity:order.total_quantity,
                         total_amount:order.total_amount,
-                        avg_price:order.total_quantity/order.total_amount
+                        avg_price:order.total_amount/order.total_quantity
+                        
+                    }
+                    if(debug){
+                        console.log("Avg Price:")
+                        console.log(item.total_amount+"/"+item.total_quantity)
                     }
                     processedData.push(item);
                 }
