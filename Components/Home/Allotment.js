@@ -24,7 +24,6 @@ export default function Allotment() {
                 investedAmount.others += order.total_amount;
             }
         })
-        console.log(investedAmount)
 
         var allocation = {
             "bitcoin":0,
