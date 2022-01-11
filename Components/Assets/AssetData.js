@@ -139,11 +139,11 @@ function AllData({asset}){
                 });
             }}
         >
-            <DataAsset data={asset.token} icon={asset.icon}/>
+            <DataAsset data={asset.currency} icon={asset.icon}/>
             <Data data={asset.price}/>
-            <Data data={asset.avgPrice}/>
-            <Data data={asset.invested}/>
-            <Data data={asset.holding}/>
+            <Data data={asset.avg_price}/>
+            <Data data={asset.total_amount}/>
+            <Data data={asset.total_quantity}/>
             <Data data={asset.pl}/>
             <Data data={asset.return}/>
         </TouchableOpacity>

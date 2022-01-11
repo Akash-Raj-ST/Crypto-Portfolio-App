@@ -1,42 +1,80 @@
-import React from 'react'
+import React,{useEffect} from 'react'
 import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity } from 'react-native'
+
 import Store from '../Redux/store'
+import db from '../firebase'
+import { getDoc, doc} from 'firebase/firestore/lite'
 
 export default function Login({navigation}) {
 
-    function updateData(){
+    const init = async()=>{
+        const userID = 'WFLOPtx94SwlicYt2sjF';
+
+        const docRef = doc(db, "User", userID);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+
+            const orders= docSnap.data().orders;
+            updateData(orders);
+
+            //processing data for allAssetStore
+            const processedData = [];
+            orders.forEach((order)=>{
+                var element = processedData.find((el)=>el.currency===order.currency);
+
+                if(element){
+                    element.total_quantity += order.quantity;
+                    element.total_amount += order.total_amount;
+                    element.avg_price = element.total_amount/element.total_quantity;
+                }else{
+                    var item = {
+                        currency:order.currency,
+                        total_quantity:order.total_quantity,
+                        total_amount:order.total_amount,
+                        avg_price:order.total_quantity/order.total_amount
+                    }
+                    processedData.push(item);
+                }
+            })
+
+            updateData2(processedData);
+        } else {
+            console.log("No such document!");
+        }
+    }
+    
+    function updateData(orders){
         Store.dispatch({
-            type:"ADD",
+            type:"ADD_ORDER",
             payload:{
-                orders:[
-                    {
-                        avgPrice:2456789,
-                        token:"Bitcoin",
-                        invested:24500,
-                        holding:0.0045,
-                        pl:+50,
-                        return:+20
-                    },
-                    {
-                        avgPrice:2456789,
-                        token:"Ethereum",
-                        invested:19500,
-                        holding:0.0045,
-                        pl:+450,
-                        return:+27
-                    },
-                    {
-                        avgPrice:2456789,
-                        token:"Matic",
-                        invested:45500,
-                        holding:0.0045,
-                        pl:+345,
-                        return:+12
-                    },
-                ]
+                orders:orders
             }
         })
     }
+
+    function updateData2(assets){
+        Store.dispatch({
+            type:"ADD_ASSET",
+            payload:{
+                assets:assets
+            }
+        })
+        
+        Store.dispatch({
+            type:"filter",
+            payload:{
+                query:'',
+                data:Store.getState().allAsset
+            }
+    })
+        console.log(Store.getState())
+    }
+
+    // useEffect(()=>{
+    //     init();
+    // },[])
+    
     return (
         <View style={styles.container}> 
             <Image source={require("../assets/images/logo.png")} style={styles.logo}/>
@@ -47,7 +85,10 @@ export default function Login({navigation}) {
 
             <TouchableOpacity 
                 style={styles.button}
-                onPress={()=>{updateData();navigation.navigate('Home')}}
+                onPress={()=>{
+                        init().then(()=>
+                        navigation.navigate('Home'))
+                    }}
             >
                 <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>

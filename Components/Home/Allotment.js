@@ -1,7 +1,46 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native'
+import Store from '../../Redux/store'
 
 export default function Allotment() {
+
+    const [allotment,setAllotment] = useState({"bitcoin":0,"ethereum":0,"others":0})
+
+    useEffect(()=>{
+        const orders = Store.getState().allAsset;
+
+        var investedAmount = {
+            "bitcoin":0,
+            "ethereum":0,
+            "others":0
+        }
+
+        orders.forEach((order)=>{
+            if(order.currency=="BTC"){
+                investedAmount.bitcoin += order.total_amount;
+            }else if(order.currency=="ETH"){
+                investedAmount.ethereum += order.total_amount;
+            }else{
+                investedAmount.others += order.total_amount;
+            }
+        })
+        console.log(investedAmount)
+
+        var allocation = {
+            "bitcoin":0,
+            "ethereum":0,
+            "others":0
+        }
+
+        const total = investedAmount.bitcoin + investedAmount.ethereum + investedAmount.others;
+
+        allocation.bitcoin = (investedAmount.bitcoin/total)*100;
+        allocation.ethereum = (investedAmount.ethereum/total)*100;
+        allocation.others = (investedAmount.others/total)*100;
+
+        setAllotment(allocation);
+    },[])
+
     return (
         <View>
             <Text style={styles.heading}>Allotment</Text>
@@ -10,15 +49,15 @@ export default function Allotment() {
                 <View style={{flexDirection:'row',justifyContent:'space-evenly',width:'100%'}}>
                     <View>             
                         <Text style={styles.content}>Bitcoin</Text>
-                        <Text style={styles.content}>24%</Text>
+                        <Text style={styles.content}>{allotment.bitcoin}%</Text>
                     </View>
                     <View>             
                         <Text style={styles.content}>Ethereum</Text>
-                        <Text style={styles.content}>27%</Text>
+                        <Text style={styles.content}>{allotment.ethereum}%</Text>
                     </View>
                     <View>             
                         <Text style={styles.content}>Others</Text>
-                        <Text style={styles.content}>49%</Text>
+                        <Text style={styles.content}>{allotment.others}%</Text>
                     </View>
                 </View>
             </View>

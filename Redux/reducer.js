@@ -1,8 +1,15 @@
+export function allOrderReducer(state=[],action){
+    if(action.type=="ADD_ORDER"){
+        return [...action.payload.orders];
+    }
+    else{
+        return state;
+    }
+}
 
-
-export function allDataReducer(state=[],action){
-    if(action.type=="ADD"){
-        return [...state,...action.payload.orders];
+export function allAssetReducer(state=[],action){
+    if(action.type=="ADD_ASSET"){
+        return [...action.payload.assets];
     }
     else{
         return state;
@@ -24,8 +31,10 @@ export function searchReducer(state=[],action){
 
         case "filter":
             const query = action.payload.query;
-            const load = action.payload.data
-            return load.filter((order)=>order.token.includes(query)==true);
+            const load = action.payload.data;
+            console.log("Load")
+            console.log(load)
+            return load.filter((order)=>order.currency.includes(query));
 
         case "SORT":
             switch(action.by){

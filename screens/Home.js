@@ -1,4 +1,4 @@
-import React ,{useState} from 'react'
+import React ,{useState,useEffect} from 'react'
 import { View, ScrollView} from 'react-native'
 import { Divider } from 'react-native-elements/dist/divider/Divider'
 
@@ -8,7 +8,12 @@ import Allotment from '../Components/Home/Allotment'
 import Statistics from '../Components/Home/Statistics'
 import BottomTabs from '../Components/BottomTabs'
 
+import Store from '../Redux/store'
+
+
 export default function Home() {
+
+
     return (
         <View style={{paddingTop:20,flex:1}}>    
             <Top/>
