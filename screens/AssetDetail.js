@@ -6,9 +6,10 @@ import Top from '../Components/AssetDetails/Top'
 import BottomTabs from '../Components/BottomTabs'
 
 export default function AssetDetail({route}) {
+   
     return (
         <View style={{flex:1}}>
-            <Top token={route.params.data.token}/>
+            <Top currency={route.params.data.currency}/>
             <ScrollView>
                 <Stats data={route.params.data}/>
             </ScrollView>

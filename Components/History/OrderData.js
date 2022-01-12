@@ -1,44 +1,79 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { View, Text,ScrollView, TouchableOpacity,Image } from 'react-native'
+
 import { Divider } from 'react-native-elements'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 
-export default function AssetData() {
-    const data = [
-        {
-            asset:"Bitcoin",
-            icon:"",
-            dateTime:"12/10/2021-11:45",
-            price:"$26,45,785",
-            amount:"$23,000",
-            quantity:"0.0012 BTC",
-        }, 
-    ]
+import Store from '../../Redux/store'
+
+export default function AssetData({currency}) {
+
+    
+    const [data,setData] = useState( Store.getState().allOrder.filter((asset)=>asset.currency==currency));
+    const [investedSort,setInvestedSort] = useState(true);
+    const [priceSort,setPriceSort] = useState(true);
+    const [quantitySort,setQuantitySort] = useState(true);
+    const [dateTimeSort,setDateTimeSort] = useState(true);
+
+    function ascSort(a,b){
+        return (a > b) ? 1 : ((b > a) ? -1 : 0);
+    }
+
+    function desSort(a,b){
+        return (a < b) ? 1 : ((b < a) ? -1 : 0);
+    }
 
     function handlePrice(){
-        console.log("Handling Price");
+        const sortedData = data;
+        if(priceSort)
+            sortedData.sort((a,b)=>ascSort(a.price_per_unit,b.price_per_unit))
+        else
+            sortedData.sort((a,b)=>desSort(a.price_per_unit,b.price_per_unit))
+        
+        setData(sortedData);
+        setPriceSort(!priceSort)
     }
-    function handleAmount(){
-        console.log("Handling Amount");
+    function handleInvested(){
+        const sortedData = data;
+        if(investedSort)
+            sortedData.sort((a,b)=>ascSort(a.total_amount,b.total_amount))
+        else
+            sortedData.sort((a,b)=>desSort(a.total_amount,b.total_amount))
+        
+        setData(sortedData);
+        setInvestedSort(!investedSort);
     }
     function handleQuantity(){
-        console.log("Handling Qunatity");
+        const sortedData = data;
+        if(quantitySort)
+            sortedData.sort((a,b)=>ascSort(a.total_quantity,b.total_quantity))
+        else
+           sortedData.sort((a,b)=>desSort(a.total_quantity,b.total_quantity))
+        
+        setData(sortedData);
+        setQuantitySort(!quantitySort);
     }
     function handleDateTime(){
-        console.log("Handling DateTime");
+        const sortedData = data;
+        if(dateTimeSort)
+            sortedData.sort((a,b)=>ascSort(a.created_at.seconds,b.created_at.seconds))
+        else
+            sortedData.sort((a,b)=>desSort(a.created_at.seconds,b.created_at.seconds))
+        
+        setData(sortedData);
+        setDateTimeSort(!dateTimeSort);
     }
-
     // const handlers={
     //     handlePrice:handlePrice(),
     //     handleQuantity:handleQuantity(),
-    //     handleAmount:handleAmount(),
+    //     handleInvested:handleInvested(),
     //     handleDateTime:handleDateTime(),
     // }
 
     const handlers={
         handlePrice,
         handleQuantity,
-        handleAmount,
+        handleInvested,
         handleDateTime,
     }
 
@@ -68,11 +103,13 @@ function Header(props){
             <Section name="Asset"/>
             <Section name="Date-Time" handle={props.handlers.handleDateTime}/>
             <Section name="Price" handle={props.handlers.handlePrice}/>
-            <Section name="Amount" handle={props.handlers.handleAmount}/>
+            <Section name="Amount" handle={props.handlers.handleInvested}/>
             <Section name="Quantity" handle={props.handlers.handleQuantity}/>
         </View>
     )
 }
+
+
 
 function Section(props){
     return(
@@ -102,14 +139,15 @@ function AllData({asset}){
     console.log(asset)
     return(
         <View style={{flexDirection:'row',paddingVertical:5}}>
-            <DataAsset data={asset.asset} icon={asset.icon}/>
-            <DataDT data={asset.dateTime}/>
-            <Data data={asset.price}/>
-            <Data data={asset.amount}/>
-            <Data data={asset.quantity}/>
+            <DataAsset data={asset.currency} icon={asset.icon}/>
+            <DataDT data={asset.created_at}/>
+            <Data data={asset.price_per_unit}/>
+            <Data data={asset.total_amount}/>
+            <Data data={asset.total_quantity}/>
         </View>
     )
 }
+
 
 function Data(props){
     return(
@@ -153,7 +191,7 @@ function DataAsset(props){
 }
 
 function DataDT(props){
-    const [date,time] = props.data.split("-");
+    let dateTimeObj = new Date(props.data.toDate())
 
     return(
         <View
@@ -166,9 +204,9 @@ function DataDT(props){
                 justifyContent:'center'
             }}
         >   
-            <View style={{justifyContent:'center',alignItems:'center'}}>     
-                <Text style={{fontSize:15,fontWeight:'bold'}}>{date}</Text>
-                <Text style={{fontSize:15,fontWeight:'bold',color:'grey'}}>{time}</Text>
+            <View style={{justifyContent:'center',alignItems:'center'}}> 
+                <Text style={{fontSize:15,fontWeight:'bold'}}>{dateTimeObj.getDate()}/{dateTimeObj.getMonth()+1}/{dateTimeObj.getFullYear()}</Text>
+                <Text style={{fontSize:15,fontWeight:'bold',color:'grey'}}>{dateTimeObj.getHours()}:{dateTimeObj.getMinutes()}</Text>
             </View>
         </View>
     )

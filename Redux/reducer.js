@@ -32,8 +32,6 @@ export function searchReducer(state=[],action){
         case "filter":
             const query = action.payload.query;
             const load = action.payload.data;
-            console.log("Load")
-            console.log(load)
             return load.filter((order)=>order.currency.includes(query));
 
         case "SORT":

@@ -8,17 +8,20 @@ export default function Stats({data}) {
             <Text style={styles().heading}>Stats</Text>
 
             <View>
-                <Row stat="Current P/L" value={data.pl>=0?"+"+data.pl.toString():"-"+data.pl.toString()}/>
+                <Row stat="Invested" value={data.total_amount}/>
                 <Row stat="All time profit" value="+$15,500"/>
                 <Row stat="All time Loss" value="-$3,500"/>
                 <Row stat="P/L booked" value="+$3,500"/>
-                <Row stat="Average buy price" value={data.avgPrice}/>
-                <Row stat="Holding" value={data.holding}/>
-                <Row stat="Returns" value={data.return>=0?"+"+data.return.toString():"-"+data.return.toString()}/>
+                <Row stat="Average buy price" value={data.avg_price}/>
+                <Row stat="Holding" value={data.total_quantity}/>
             </View>
         </View>
     )
 }
+
+// <Row stat="Current P/L" value={data.pl>=0?"+"+data.pl.toString():"-"+data.pl.toString()}/>
+           
+// <Row stat="Returns" value={data.return>=0?"+"+data.return.toString():"-"+data.return.toString()}/>
 
 function Row(props){
     return(

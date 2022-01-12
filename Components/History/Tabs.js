@@ -2,7 +2,7 @@ import React,{useState} from 'react'
 import { View, Text,TouchableOpacity } from 'react-native'
 
 export default function Tabs(){
-    const [activeTab,setActiveTab] = useState("Order");
+    const [activeTab,setActiveTab] = useState("Order History");
 
     return(
         <View 
@@ -15,7 +15,7 @@ export default function Tabs(){
                 alignSelf: 'center',
                 paddingHorizontal:10,
             }}>
-           <Tab tab="Order" activeTab={activeTab} setActiveTab={setActiveTab}/>
+           <Tab tab="Order History" activeTab={activeTab} setActiveTab={setActiveTab}/>
         </View>
     )
 }
