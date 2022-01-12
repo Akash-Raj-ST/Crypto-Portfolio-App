@@ -15,7 +15,6 @@ export default function Profile() {
             <ScrollView>           
                 <Document/>
                 <Divider/>
-                <Balance/>
             </ScrollView>
             <BottomTabs currentTab="Profile"/>
         </View>
