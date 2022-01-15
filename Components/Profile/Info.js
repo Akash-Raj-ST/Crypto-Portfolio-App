@@ -1,31 +1,43 @@
 import React from 'react'
-import { View, Text, Image } from 'react-native'
+import { View, Text, StyleSheet,TouchableOpacity } from 'react-native'
 
 export default function Info() {
     return (
         <View
             style={{
-                paddingTop:50,
                 flexDirection:'row',
                 alignItems:'center',
-                margin:30
+                justifyContent:'space-between',
+                margin:30,
             }}
         >
-            <Image 
-                style={{
-                    width:90,
-                    height:90,
-                    borderRadius:50
-                }}
-                source={require("../../assets/images/dp.jpg")}
-            />
             <Text
                 style={{
                     fontSize:25,
                     fontWeight:'bold',
-                    paddingHorizontal:20
                 }}
             >Akash Raj</Text>
+
+            <TouchableOpacity 
+                style={styles.button}
+            >
+                <Text style={styles.buttonText}>Log Out</Text>
+            </TouchableOpacity>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    button:{
+        backgroundColor:'red',
+        paddingHorizontal:20,
+        paddingVertical:10,
+        borderRadius:15,
+        margin:20
+    },
+    buttonText:{
+        color:'white',
+        fontWeight:'bold',
+        fontSize:18
+    }
+})

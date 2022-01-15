@@ -25,7 +25,7 @@ export default function SearchAsset() {
                 alignItems:'center',
                 justifyContent:'center',
                 borderWidth:2,
-                amrgin:10,
+                margin:10,
                 alignSelf:'center',
                 borderRadius:10
             }}
