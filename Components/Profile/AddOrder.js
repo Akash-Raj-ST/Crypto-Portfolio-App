@@ -29,7 +29,8 @@ export default function AddOrder() {
                 <Text style={styles.buttonText}>Add new</Text>
             </TouchableOpacity>
             {coinSelection && <CoinSelection setVisible={setCoinSelection} selectedCoin={setSelectedCoin}/>}
-            {orderDetail && <OrderDetails currency={selectedCoin} setVisible={setOrderDetail} />}           
+            {orderDetail && <OrderDetails currency={selectedCoin} setVisible={setOrderDetail} />} 
+                   
         </View>
     )
 }

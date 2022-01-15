@@ -1,7 +1,7 @@
 import React, { useState,useEffect } from 'react'
 import { View, Text,TouchableOpacity,StyleSheet, Modal,TextInput, Image } from 'react-native'
 
-import { useNavigation } from '@react-navigation/native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function OrderDetails(props){
 
@@ -56,6 +56,9 @@ export default function OrderDetails(props){
                             <TimeInput/>
                         </View>
                         <Total amount={amount} type={activeTab}/>
+                        <TouchableOpacity style={styles.button2}>
+                            <Text style={styles.buttonText}>Add</Text>
+                        </TouchableOpacity>  
                     </View>
                 </View>
             </Modal>
@@ -73,7 +76,7 @@ function Tabs(props){
                 margin:10,
                 alignSelf: 'center',
                 paddingHorizontal:10,
-                marginVertical:30
+                marginTop:20
             }}>
            <Tab tab="Buy" activeTab={props.activeTab} setActiveTab={props.setActiveTab}/>
            <Tab tab="Sell" activeTab={props.activeTab} setActiveTab={props.setActiveTab}/>
@@ -107,7 +110,7 @@ function Tab(props){
 
 function Input(props){
     return(
-        <View style={{marginVertical:10}}>
+        <View style={{marginVertical:5}}>
             <Text style={{fontWeight:'bold',fontSize:20,marginHorizontal:10}}>{props.placeholder}</Text>
             
             <TextInput 
@@ -116,7 +119,7 @@ function Input(props){
                     height:50,
                     borderRadius:10,
                     marginHorizontal:10,
-                    marginVertical:5,
+                    // marginVertical:5,
                     borderColor:'#eee',
                     paddingHorizontal:10,
                     fontWeight:'bold',
@@ -133,24 +136,55 @@ function Input(props){
 }
 
 function DateInput(){
+    const [date,setDate] = useState(new Date());
+    const [openDate,setOpenDate] = useState(false);
     return(
-        <TouchableOpacity style={{alignItems:'center',marginBottom:10}} activeOpacity={0.8}>
+        <TouchableOpacity 
+            style={{alignItems:'center',marginBottom:10}} 
+            activeOpacity={0.8}
+            onPress={()=>{
+                setOpenDate(true);
+            }}
+        >
             <Text style={{fontWeight:'bold',fontSize:18,marginBottom:5}}>Date</Text>
             <View style={{backgroundColor:'white',elevation:8,paddingVertical:5,paddingHorizontal:15,borderRadius:8}}>
-                <Text style={{fontWeight:'bold',fontSize:18}}>12/01/2021</Text>
+                <Text style={{fontWeight:'bold',fontSize:18}}>{date.getDate()}/{date.getMonth()+1}/{date.getFullYear()}</Text>
             </View>
+           {openDate && <DateTimeModal mode='date' setOpen={setOpenDate} setValue={setDate}/>}
         </TouchableOpacity>
     )
 }
 
 function TimeInput(){
+    const [time,setTime] = useState(new Date());
+    const [openTime,setOpenTime] = useState(false);
     return(
-        <TouchableOpacity style={{alignItems:'center',marginBottom:10}} activeOpacity={0.8}>
+        <TouchableOpacity 
+            style={{alignItems:'center',marginBottom:10}} 
+            activeOpacity={0.8}
+            onPress={()=>{
+                setOpenTime(true);
+            }}
+        >
             <Text style={{fontWeight:'bold',fontSize:18,marginBottom:5}}>Time</Text>
             <View style={{backgroundColor:'white',elevation:8,padding:5,borderRadius:8}}>
-                <Text style={{fontWeight:'bold',fontSize:18}}>15:36</Text>
+                <Text style={{fontWeight:'bold',fontSize:18}}>{time.getHours()}:{time.getMinutes()<10?"0"+time.getMinutes():time.getMinutes()}</Text>
             </View>
+           {openTime && <DateTimeModal mode='time' setOpen={setOpenTime} setValue={setTime}/>}
         </TouchableOpacity>
+    )
+}
+
+function DateTimeModal(props){
+    return(
+       <DateTimePicker
+          testID="dateTimePicker"
+          value={new Date()}
+          mode={props.mode}
+          is24Hour={true}
+          display="spinner"
+          onChange={(value)=>{props.setOpen(false);props.setValue(new Date(Date.parse(value.nativeEvent.timestamp)))}}
+        />
     )
 }
 
@@ -165,7 +199,6 @@ function Total({amount,type}){
                     height:50,
                     borderRadius:10,
                     marginHorizontal:10,
-                    marginVertical:5,
                     borderColor:'#eee',
                     justifyContent:'center',
                     paddingHorizontal:10,
@@ -202,6 +235,16 @@ const styles = StyleSheet.create({
     },
     button:{
         backgroundColor:'blue',
+        paddingHorizontal:20,
+        paddingVertical:10,
+        borderRadius:15,
+        margin:20,
+        alignItems:'center',
+        flexDirection:'row',
+        justifyContent:'center'
+    },
+    button2:{
+        backgroundColor:'black',
         paddingHorizontal:20,
         paddingVertical:10,
         borderRadius:15,

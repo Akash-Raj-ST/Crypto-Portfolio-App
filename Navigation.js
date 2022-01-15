@@ -25,7 +25,7 @@ export default function Navigation(){
             theme={MyTheme}
         >
             <Stack.Navigator 
-                initialRouteName="Login"  
+                initialRouteName="Profile"  
                 screenOptions={{
                     headerShown: false
                 }}
