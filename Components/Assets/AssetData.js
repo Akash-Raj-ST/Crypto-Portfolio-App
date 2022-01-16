@@ -37,18 +37,18 @@ export default function AssetData({query}) {
     }
    
     function handlePL(){
-        setPLSort(!plSort)
-        if(investedSort)
+        if(plSort)
             setData(data.sort((a,b)=>ascSort(a.pl,b.pl)));
         else
             setData(data.sort((a,b)=>desSort(a.pl,b.pl)));
+        setPLSort(!plSort)
     }
     function handleReturn(){
-        setReturnSort(!returnSort)
-        if(investedSort)
-            setData(data.sort((a,b)=>ascSort(a.return,b.return)));
+        if(returnSort)
+            setData(data.sort((a,b)=>ascSort(a.returns,b.returns)));
         else
-            setData(data.sort((a,b)=>desSort(a.return,b.return)));
+            setData(data.sort((a,b)=>desSort(a.returns,b.returns)));
+        setReturnSort(!returnSort)
     }
 
     // const handlers={
@@ -133,17 +133,31 @@ function AllData({asset}){
             }}
         >
             <DataAsset data={asset.currency} icon={asset.icon}/>
-            <Data data={asset.price}/>
+            <Data data={asset.curr_price}/>
             <Data data={asset.avg_price}/>
             <Data data={asset.total_amount}/>
             <Data data={asset.total_quantity}/>
-            <Data data={asset.pl}/>
-            <Data data={asset.return}/>
+            <Data data={asset.pl} value={"pl"}/>
+            <Data data={asset.returns} value={"returns"}/>
         </TouchableOpacity>
     )
 }
 
 function Data(props){
+
+    //for returns
+    const percent = props.value?props.value==="returns"?"%":"":"";
+    //for pl
+    const plus_minus = props.value?props.value==="pl"||"returns"?true:false:false;
+
+    let value = props.data;
+    if(props.value){
+        if(props.value==="returns"||"pl"){
+            if(value>0){
+                value = "+"+value.toString();
+            }
+        }
+    }
     return(
         <View
             style={{
@@ -155,7 +169,13 @@ function Data(props){
                 justifyContent:'center'
             }}
         >
-            <Text style={{fontSize:15,fontWeight:'bold'}}>{props.data}</Text>
+            <Text 
+                style={{
+                    fontSize:15,
+                    fontWeight:'bold',
+                    color:plus_minus && props.data!=0?props.data>0?'green':'red':'black',
+                }}>
+                {value}{percent}</Text>
         </View>
     )
 }
