@@ -62,13 +62,6 @@ export default function Login({navigation}) {
             }
         })
         
-        Store.dispatch({
-            type:"filter",
-            payload:{
-                query:'',
-                data:Store.getState().allAsset
-            }
-    })
     }
 
     // useEffect(()=>{
