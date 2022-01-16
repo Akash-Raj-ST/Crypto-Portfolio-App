@@ -27,19 +27,25 @@ export default function Login({navigation}) {
                     element.total_quantity += order.total_quantity;
                     element.total_amount += order.total_amount;
                     element.avg_price = element.total_amount/element.total_quantity;
+                    element.pl = (element.curr_price*element.total_quantity)-element.total_amount;
+                    returns = ((element.curr_price-element.total_amount)/element.total_amount)*100;
                 }else{
+                    var curr_price = 1000;
                     var item = {
                         currency:order.currency,
                         total_quantity:order.total_quantity,
                         total_amount:order.total_amount,
-                        avg_price:order.total_amount/order.total_quantity
-                        
+                        avg_price:order.total_amount/order.total_quantity,
+                        curr_price:curr_price,
+                        pl:(curr_price*order.total_quantity)-order.total_amount,
+                        returns: ((curr_price*order.total_quantity)-order.total_amount) / order.total_amount*100
                     }
                     processedData.push(item);
                 }
             })
 
             updateData2(processedData);
+
         } else {
             console.log("No such document!");
         }
@@ -61,8 +67,9 @@ export default function Login({navigation}) {
                 assets:assets
             }
         })
-        
+        console.log(Store.getState())
     }
+
 
     // useEffect(()=>{
     //     init();

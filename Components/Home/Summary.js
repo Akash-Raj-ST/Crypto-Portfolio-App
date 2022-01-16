@@ -6,17 +6,22 @@ import Store from '../../Redux/store'
 export default function Summary(){
 
     const [deposits,setDeposits] = useState(0);
+    const [returns,setReturns] = useState(0)
     
     useEffect(() => {
-        const orders = Store.getState().allAsset;
+        const assets = Store.getState().allAsset;
 
         var sum = 0;
+        var currValue = 0;
+        if(assets){
+            assets.forEach((asset)=>{
+                sum += asset.total_amount;
+                currValue += asset.curr_price*asset.total_quantity;
+            })
+        }
 
-        if(orders)
-        orders.forEach((order)=>{
-            sum += order.total_amount;
-        })
-
+        const returns = ((currValue-sum) / sum)*100;
+        setReturns(returns.toPrecision(4));
         setDeposits(sum);
     }, [])
 
@@ -31,7 +36,7 @@ export default function Summary(){
                 </View>
                 <View>             
                     <Text style={styles.content}>Returns</Text>
-                    <Text style={styles.content}>+32%</Text>
+                    <Text style={styles.content}>{returns>0?"+"+returns.toString():returns}%</Text>
                 </View>
             </View>
             <Options/>
