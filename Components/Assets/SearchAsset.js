@@ -1,21 +1,8 @@
 import React, { useState,useEffect } from 'react'
 import { View, Text, TextInput } from 'react-native'
 import AntDesign from 'react-native-vector-icons/AntDesign'
-import Store from '../../Redux/store'
 
-export default function SearchAsset() {
-
-    const [search,setSearch] = useState("");
-
-    useEffect(() => {
-        Store.dispatch({
-            type:"filter",
-            payload:{
-                query:search,
-                data:Store.getState().allAsset
-            }
-        })
-    }, [search])
+export default function SearchAsset({query,setQuery}) {
 
 
     return (
@@ -39,14 +26,14 @@ export default function SearchAsset() {
                     fontSize:16,
                 }}
                 placeholder='search...'
-                value={search}
-                onChangeText={(value)=>{setSearch(value)}}
+                value={query}
+                onChangeText={(value)=>{setQuery(value)}}
             />
             <AntDesign name='closecircle' size={17}
                 style={{
                    padding:5
                 }}
-                onPress={()=>{setSearch("")}}
+                onPress={()=>{setQuery("")}}
             />
         </View>
     )

@@ -1,7 +1,7 @@
 import { createStore,combineReducers } from "redux";
-import {allOrderReducer,searchReducer,allAssetReducer} from "./reducer";
+import {allOrderReducer,allAssetReducer} from "./reducer";
 
-const rootReducer = combineReducers({allOrder:allOrderReducer,search:searchReducer,allAsset:allAssetReducer});
+const rootReducer = combineReducers({allOrder:allOrderReducer,allAsset:allAssetReducer});
 const Store = createStore(rootReducer)
 
 export default Store;

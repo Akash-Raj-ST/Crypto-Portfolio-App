@@ -6,56 +6,49 @@ import { useNavigation } from '@react-navigation/native'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Store from '../../Redux/store'
 
-export default function AssetData() {
+export default function AssetData({query}) {
 
-    const [data,setData] = useState(Store.getState().search);
+    const perData = Store.getState().allAsset;
+    const [data,setData] = useState(perData);
     const [investedSort,setInvestedSort] = useState(true);
     const [plSort,setPLSort] = useState(true);
     const [returnSort,setReturnSort] = useState(true);
 
+    useEffect(() => { 
+        const newData = perData.filter((order)=>order.currency.includes(query));
+        setData(newData);
+    },[query])
 
-    const handleUpdate = ()=>{
-        console.log("handling")
-        setData(Store.getState().search)
+    function ascSort(a,b){
+        return (a > b) ? 1 : ((b > a) ? -1 : 0);
     }
 
-    useEffect(() => {
-        
-        const unsubscribe = Store.subscribe(handleUpdate);
-       // Specify how to clean up after this effect:
-        return ()=> {
-            unsubscribe();
-            console.log("unsubscribed!!!");
-        };
-    })
-
-    
+    function desSort(a,b){
+        return (a < b) ? 1 : ((b < a) ? -1 : 0);
+    }
 
     function handleInvested(){
- 
-        setInvestedSort(!investedSort)
-         Store.dispatch({
-            type:"SORT",
-            by:"INVESTED",
-            ascOrder:investedSort
-        })
+        
+        if(investedSort)
+            setData(data.sort((a,b)=>ascSort(a.total_amount,b.total_amount)));
+        else
+            setData(data.sort((a,b)=>desSort(a.total_amount,b.total_amount)));
+        setInvestedSort(!investedSort);
     }
    
     function handlePL(){
         setPLSort(!plSort)
-         Store.dispatch({
-            type:"SORT",
-            by:"PL",
-            ascOrder:plSort
-        })
+        if(investedSort)
+            setData(data.sort((a,b)=>ascSort(a.pl,b.pl)));
+        else
+            setData(data.sort((a,b)=>desSort(a.pl,b.pl)));
     }
     function handleReturn(){
         setReturnSort(!returnSort)
-         Store.dispatch({
-            type:"SORT",
-            by:"RETURN",
-            ascOrder:returnSort
-        })
+        if(investedSort)
+            setData(data.sort((a,b)=>ascSort(a.return,b.return)));
+        else
+            setData(data.sort((a,b)=>desSort(a.return,b.return)));
     }
 
     // const handlers={
