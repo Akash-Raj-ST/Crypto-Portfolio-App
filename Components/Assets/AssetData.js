@@ -137,8 +137,8 @@ function AllData({asset}){
             <Data data={asset.avg_price}/>
             <Data data={asset.total_amount}/>
             <Data data={asset.total_quantity}/>
-            <Data data={asset.pl} value={"pl"}/>
-            <Data data={asset.returns} value={"returns"}/>
+            <Data data={asset.pl.toFixed(2)} value={"pl"}/>
+            <Data data={asset.returns.toFixed(2)} value={"returns"}/>
         </TouchableOpacity>
     )
 }
