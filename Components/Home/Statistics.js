@@ -1,22 +1,54 @@
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
+import Store from '../../Redux/store'
+
 export default function Statistics() {
+    const [bestPerformer,setBestPerformer] = useState({"currency":"","percent":0,"amount":0})
+    const [worstPerformer,setWorstPerformer] = useState({"currency":"","percent":0,"amount":0})
+
+    useEffect(() => {
+        var bestPerformer={"currency":"","percent":0,"amount":0};
+        var worstPerformer={"currency":"","percent":0,"amount":0};
+
+        const assets = Store.getState().allAsset;
+
+        if(assets){
+            assets.forEach((asset)=>{
+                var percent = asset.returns;
+
+                if(percent>bestPerformer["percent"]){
+                    bestPerformer={"currency":asset.currency,"percent":percent.toPrecision(4),"amount":asset.pl};
+                }
+                if(percent<worstPerformer["percent"]){
+                    worstPerformer={"currency":asset.currency,"percent":percent.toPrecision(4),"amount":asset.pl};
+                }
+            })
+        }
+
+        setBestPerformer(bestPerformer);
+        setWorstPerformer(worstPerformer);
+    },[])
+
     return (
         <View style={{marginBottom:10}}>
             <Text style={styles.heading}>Statistics</Text>
             <View style={styles.box}>
                 <View style={{flexDirection:'row'}}>
-                    <View style={{marginRight:20}}>
-                        <Text style={styles.content}>Best Performer</Text>
-                        <Text style={styles.content}>Ethereum</Text>
-                        <Text style={[styles.content,{color:'green'}]}>+23%($23,456)</Text>
-                    </View>
-                    <View>
-                        <Text style={styles.content}>Worst Performer</Text>
-                        <Text style={styles.content}>ICP</Text>
-                        <Text style={[styles.content,{color:'red'}]}>-40%($3,732)</Text>
-                    </View>
+                    {bestPerformer.currency.length>0 &&
+                        <View style={{marginRight:20}}>
+                            <Text style={styles.content}>Best Performer</Text>
+                            <Text style={styles.content}>{bestPerformer.currency}</Text>
+                            <Text style={[styles.content,{color:'green'}]}>+{bestPerformer.percent}%(+${bestPerformer.amount})</Text>
+                        </View>
+                    }
+                    {worstPerformer.currency.length>0 &&
+                        <View>
+                            <Text style={styles.content}>Worst Performer</Text>
+                            <Text style={styles.content}>{worstPerformer.currency}</Text>
+                            <Text style={[styles.content,{color:'red'}]}>{worstPerformer.percent}%(-${worstPerformer.amount*-1})</Text>
+                        </View>
+                    }
                 </View>
                  <View style={{flexDirection:'row'}}>
                     <View style={{marginRight:20}}>
