@@ -86,7 +86,6 @@ export default function Login({navigation}) {
                 assets:assets
             }
         })
-        console.log(Store.getState())
     }
 
 

@@ -9,6 +9,7 @@ export default function Info() {
                 alignItems:'center',
                 justifyContent:'space-between',
                 margin:30,
+                marginBottom:10
             }}
         >
             <Text

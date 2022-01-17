@@ -65,14 +65,14 @@ export default function DataTable() {
                 <ScrollView style={{flexDirection:'row'}}> 
                     <Header handlers={handlers}/>
                     <Divider/>
-                    <View >
+                    <ScrollView vertical>
                         {data.map((asset,index)=>(
                             <View key={index} style={{paddingVertical:5}}>
                                 <AllData  asset={asset}/>
                                 <Divider width={2} color='#eee' style={{marginHorizontal:10}}/>
                             </View>
                         ))}
-                    </View>
+                    </ScrollView>
                 </ScrollView>
             </ScrollView>
         </ScrollView>
