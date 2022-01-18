@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { View, Text,ScrollView, TouchableOpacity,Image } from 'react-native'
 
 import { Divider } from 'react-native-elements'
@@ -13,7 +13,19 @@ export default function DataTable() {
     const [investedSort,setInvestedSort] = useState(true);
     const [quantitySort,setQuantitySort] = useState(true);
     const [dateTimeSort,setDateTimeSort] = useState(true);
+    
+    const handleAddOrder = ()=>{
+        setData(Store.getState().allOrder);
+        console.log("handling...");
+    }
 
+    useEffect(() => {
+        const unsubscribe = Store.subscribe(handleAddOrder);
+        return () => {
+            // Clean up the subscription
+            unsubscribe();
+        };
+    });
     function ascSort(a,b){
         return (a > b) ? 1 : ((b > a) ? -1 : 0);
     }
@@ -175,7 +187,8 @@ function DataAsset(props){
 }
 
 function DataDT(props){
-    let dateTimeObj = new Date(props.data.toDate())
+    let dateTimeObj = new Date(props.data.toDate());
+    
 
     return(
         <View

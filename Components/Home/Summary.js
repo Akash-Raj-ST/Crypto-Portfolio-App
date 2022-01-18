@@ -3,13 +3,13 @@ import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native'
 
 import Store from '../../Redux/store'
 
-export default function Summary(){
+export default function Summary({allAssets}){
 
     const [deposits,setDeposits] = useState(0);
     const [returns,setReturns] = useState(0)
     
     useEffect(() => {
-        const assets = Store.getState().allAsset;
+        const assets = allAssets;
 
         var sum = 0;
         var currValue = 0;
@@ -21,9 +21,10 @@ export default function Summary(){
         }
 
         const returns = ((currValue-sum) / sum)*100;
+        console.log('home summary....');
         setReturns(returns.toPrecision(4));
         setDeposits(sum);
-    }, [])
+    }, [allAssets])
 
     return(
         <View>

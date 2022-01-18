@@ -3,6 +3,12 @@ import { View, Text,TouchableOpacity,StyleSheet, Modal,TextInput, Image } from '
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+import db from '../../../firebase';
+import { doc, updateDoc, arrayUnion, getDoc } from 'firebase/firestore/lite';
+import {Timestamp} from 'firebase/firestore';
+
+import updateOrder from '../../../updateOrder';
+
 export default function OrderDetails(props){
 
     const [quantity,setQuantity] = useState(0);
@@ -20,13 +26,33 @@ export default function OrderDetails(props){
         setAmount(amt);
     },[quantity,price])
  
-    const addOrder =()=>{
+    const addOrder =async()=>{
         if(amount<=0){
             console.log("Enter valid data for price and quantity");
             return
         }
         const act_date = new Date(date.getFullYear(),date.getMonth(),date.getDate(),time.getHours(),time.getMinutes(),time.getSeconds())
-        console.log(`currency:${props.currency}\ntype:${activeTab}\nquantity:${quantity}\nprice:${price}\namount:${amount}\ndate:${act_date}`)
+        
+        const order = {
+            currency: props.currency,
+            created_at: act_date,
+            type: activeTab.toLowerCase(),
+            total_quantity: Number(quantity),
+            total_amount: Number(amount),
+            price_per_unit: Number(price),
+        }
+
+        const userID = 'WFLOPtx94SwlicYt2sjF';
+        const docRef = doc(db,"User",userID)
+        
+        await updateDoc(docRef,{
+            orders: arrayUnion(order)
+        })
+        order.created_at =new Timestamp (Math.floor(order.created_at.getTime() / 1000),0);
+
+        updateOrder(order);
+        props.setVisible(false)
+        // console.log(`currency:${props.currency}\ntype:${activeTab}\nquantity:${quantity}\nprice:${price}\namount:${amount}\ndate:${act_date}`)
     }
 
     return(

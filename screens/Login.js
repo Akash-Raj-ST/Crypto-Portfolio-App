@@ -33,13 +33,17 @@ export default function Login({navigation}) {
                     }else if(element.total_quantity>=order.total_quantity){
                         element.total_quantity -= order.total_quantity;
                         // element.total_amount = no changes;
-                        element.avg_price = element.total_amount/element.total_quantity;
+                        if(element.total_quantity===0){
+                            element.avg_price = 0;
+                        }else{
+                            element.avg_price = element.total_amount/element.total_quantity;
+                        }
                         element.pl = (element.curr_price*element.total_quantity)-element.total_amount;
                         element.returns = element.pl/element.total_amount*100;
                         element.withdrew += order.total_amount;
                         element.sold_quantity += order.total_quantity;
                     }else{
-                        console.log("Not enough quantity to sell!!!");
+                        console.log(`Not enough quantity to sell!!! available:${element.total_quantity}`);
                     }
                 }else{
                     if(order.type=="buy"){
@@ -58,7 +62,7 @@ export default function Login({navigation}) {
                         processedData.push(item);
                     }
                     else{
-                        console.log("You dont have that to sell");
+                        console.log("Buy some befire selling.");
                     }
                 }
             })
