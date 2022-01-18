@@ -3,17 +3,20 @@ import { View, Text, StyleSheet} from 'react-native'
 import { Divider } from 'react-native-elements'
 
 export default function Stats({data}) {
+
+    const overall_pl = (data.curr_price*data.total_quantity)+data.withdrew-data.total_amount;
+
     return (
         <View>
             <Text style={styles().heading}>Stats</Text>
 
             <View>
                 <Row stat="Invested" value={data.total_amount}/>
-                <Row stat="All time profit" value="+$15,500"/>
-                <Row stat="All time Loss" value="-$3,500"/>
-                <Row stat="P/L booked" value="+$3,500"/>
+                <Row stat="Total PL" value={overall_pl>0?"+"+overall_pl.toString():overall_pl.toString()}/>
+                <Row stat="Amount Withdrew" value={"+"+data.withdrew}/>
                 <Row stat="Average buy price" value={data.avg_price}/>
                 <Row stat="Holding" value={data.total_quantity}/>
+                <Row stat="Sold" value={data.sold_quantity}/>
             </View>
         </View>
     )
@@ -31,7 +34,7 @@ function Row(props){
                 <Text style={{fontWeight:'bold',fontSize:18,paddingVertical:10}}>:</Text>
                 <Text style={styles({value:props.value[0]}).rowValue}>{props.value}</Text>
             </View>
-            <Divider style={{marginHorizontal:40}}/>
+            <Divider style={{marginHorizontal:20}}/>
         </View>
     )
 }

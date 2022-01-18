@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { View, Text,ScrollView, TouchableOpacity,Image } from 'react-native'
 
 import { Divider } from 'react-native-elements'
@@ -13,7 +13,19 @@ export default function DataTable() {
     const [investedSort,setInvestedSort] = useState(true);
     const [quantitySort,setQuantitySort] = useState(true);
     const [dateTimeSort,setDateTimeSort] = useState(true);
+    
+    const handleAddOrder = ()=>{
+        setData(Store.getState().allOrder);
+        console.log("handling...");
+    }
 
+    useEffect(() => {
+        const unsubscribe = Store.subscribe(handleAddOrder);
+        return () => {
+            // Clean up the subscription
+            unsubscribe();
+        };
+    });
     function ascSort(a,b){
         return (a > b) ? 1 : ((b > a) ? -1 : 0);
     }
@@ -65,14 +77,14 @@ export default function DataTable() {
                 <ScrollView style={{flexDirection:'row'}}> 
                     <Header handlers={handlers}/>
                     <Divider/>
-                    <View >
+                    <ScrollView vertical>
                         {data.map((asset,index)=>(
                             <View key={index} style={{paddingVertical:5}}>
                                 <AllData  asset={asset}/>
                                 <Divider width={2} color='#eee' style={{marginHorizontal:10}}/>
                             </View>
                         ))}
-                    </View>
+                    </ScrollView>
                 </ScrollView>
             </ScrollView>
         </ScrollView>
@@ -84,6 +96,7 @@ function Header(props){
         <View style={{flexDirection:'row',paddingVertical:10}}>
             <Section name="Asset"/>
             <Section name="Date-Time" handle={props.handlers.handleDateTime}/>
+            <Section name="Buy/Sell" />
             <Section name="Price" />
             <Section name="Amount" handle={props.handlers.handleInvested}/>
             <Section name="Quantity" handle={props.handlers.handleQuantity}/>
@@ -118,11 +131,12 @@ function Section(props){
 
 
 function AllData({asset}){
-    console.log(asset)
+    const bg = asset.type==="buy"?'lightgreen':'palevioletred'
     return(
-        <View style={{flexDirection:'row',paddingVertical:5}}>
+        <View style={{flexDirection:'row',paddingVertical:5,backgroundColor:bg}}>
             <DataAsset data={asset.currency} icon={asset.icon}/>
             <DataDT data={asset.created_at}/>
+            <Data data={asset.type}/>
             <Data data={asset.price_per_unit}/>
             <Data data={asset.total_amount}/>
             <Data data={asset.total_quantity}/>
@@ -173,7 +187,8 @@ function DataAsset(props){
 }
 
 function DataDT(props){
-    let dateTimeObj = new Date(props.data.toDate())
+    let dateTimeObj = new Date(props.data.toDate());
+    
 
     return(
         <View

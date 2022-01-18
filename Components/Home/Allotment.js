@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Image } from 'react-native'
 import Store from '../../Redux/store'
 
-export default function Allotment() {
+export default function Allotment({allAssets}) {
 
     const [allotment,setAllotment] = useState({"bitcoin":0,"ethereum":0,"others":0})
 
     useEffect(()=>{
-        const orders = Store.getState().allAsset;
+        const orders = allAssets;
 
         var investedAmount = {
             "bitcoin":0,
@@ -37,8 +37,9 @@ export default function Allotment() {
         allocation.ethereum = ((investedAmount.ethereum/total)*100).toPrecision(4);
         allocation.others = ((investedAmount.others/total)*100).toPrecision(4);
 
+        console.log('home Allotment....');
         setAllotment(allocation);
-    },[])
+    },[allAssets])
 
     return (
         <View>

@@ -102,6 +102,7 @@ function Header(props){
         <View style={{flexDirection:'row',paddingVertical:10}}>
             <Section name="Asset"/>
             <Section name="Date-Time" handle={props.handlers.handleDateTime}/>
+            <Section name="Buy/Sell" />
             <Section name="Price" handle={props.handlers.handlePrice}/>
             <Section name="Amount" handle={props.handlers.handleInvested}/>
             <Section name="Quantity" handle={props.handlers.handleQuantity}/>
@@ -141,6 +142,7 @@ function AllData({asset}){
         <View style={{flexDirection:'row',paddingVertical:5}}>
             <DataAsset data={asset.currency} icon={asset.icon}/>
             <DataDT data={asset.created_at}/>
+            <Data data={asset.type}/>
             <Data data={asset.price_per_unit}/>
             <Data data={asset.total_amount}/>
             <Data data={asset.total_quantity}/>

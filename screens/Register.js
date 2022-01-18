@@ -4,13 +4,11 @@ import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity } from 'reac
 export default function Register({navigation}) {
     return (
         <View style={styles.container}> 
-            <Image source={require("../assets/images/logo.png")} style={[styles.logo,{marginBottom:10}]}/>
+            <Image source={require("../assets/images/logo.png")} style={styles.logo}/>
             <View>
-                <InputField title="Name" placeHolder="Name"/>
-                <InputField title="Email" placeHolder="Email"/>
-                <InputField title="API key" placeHolder="API key"/>
-                <InputField title="Secret Key" placeHolder="Secret Key"/>
+                <InputField title="username" placeHolder="username"/>
                 <InputField title="Password" placeHolder="Password" type="password"/>
+                <InputField title="Re-Password" placeHolder="Enter Password again" type="password"/>
             </View>
             <TouchableOpacity style={styles.button}>
                 <Text style={styles.buttonText}>Register</Text>
@@ -58,8 +56,9 @@ const styles = StyleSheet.create({
     },
     
     logo:{
-        width:25,
-        height:25,
+        width:100,
+        height:100,
+        marginBottom:50,
     },
 
     input:{

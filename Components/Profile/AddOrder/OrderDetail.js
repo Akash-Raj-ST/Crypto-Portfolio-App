@@ -3,11 +3,20 @@ import { View, Text,TouchableOpacity,StyleSheet, Modal,TextInput, Image } from '
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 
+import db from '../../../firebase';
+import { doc, updateDoc, arrayUnion, getDoc } from 'firebase/firestore/lite';
+import {Timestamp} from 'firebase/firestore';
+
+import updateOrder from '../../../updateOrder';
+
 export default function OrderDetails(props){
 
     const [quantity,setQuantity] = useState(0);
     const [price,setPrice] = useState(0);
     const [amount,setAmount] = useState(0);
+    
+    const [date,setDate] = useState(new Date());
+    const [time,setTime] = useState(new Date());
 
     const [activeTab,setActiveTab] = useState("Buy");
 
@@ -16,7 +25,35 @@ export default function OrderDetails(props){
         const amt = Number(quantity)*Number(price)
         setAmount(amt);
     },[quantity,price])
+ 
+    const addOrder =async()=>{
+        if(amount<=0){
+            console.log("Enter valid data for price and quantity");
+            return
+        }
+        const act_date = new Date(date.getFullYear(),date.getMonth(),date.getDate(),time.getHours(),time.getMinutes(),time.getSeconds())
+        
+        const order = {
+            currency: props.currency,
+            created_at: act_date,
+            type: activeTab.toLowerCase(),
+            total_quantity: Number(quantity),
+            total_amount: Number(amount),
+            price_per_unit: Number(price),
+        }
 
+        const userID = 'WFLOPtx94SwlicYt2sjF';
+        const docRef = doc(db,"User",userID)
+        
+        await updateDoc(docRef,{
+            orders: arrayUnion(order)
+        })
+        order.created_at =new Timestamp (Math.floor(order.created_at.getTime() / 1000),0);
+
+        updateOrder(order);
+        props.setVisible(false)
+        // console.log(`currency:${props.currency}\ntype:${activeTab}\nquantity:${quantity}\nprice:${price}\namount:${amount}\ndate:${act_date}`)
+    }
 
     return(
         <View style={{justifyContent:'center',alignContent:'center'}}>
@@ -52,11 +89,14 @@ export default function OrderDetails(props){
                         <Input placeholder="Price Per Coin" attValue={price} setValue={setPrice}/>
 
                         <View style={{flexDirection:'row',justifyContent:'space-evenly'}}>
-                            <DateInput/>
-                            <TimeInput/>
+                            <DateInput date={date} setDate={setDate}/>
+                            <TimeInput time={time} setTime={setTime}/>
                         </View>
                         <Total amount={amount} type={activeTab}/>
-                        <TouchableOpacity style={styles.button2}>
+                        <TouchableOpacity 
+                            style={styles.button2}
+                            onPress={()=>addOrder()}
+                        >
                             <Text style={styles.buttonText}>Add</Text>
                         </TouchableOpacity>  
                     </View>
@@ -135,9 +175,10 @@ function Input(props){
     )
 }
 
-function DateInput(){
-    const [date,setDate] = useState(new Date());
+function DateInput({date,setDate}){
+
     const [openDate,setOpenDate] = useState(false);
+
     return(
         <TouchableOpacity 
             style={{alignItems:'center',marginBottom:10}} 
@@ -150,13 +191,13 @@ function DateInput(){
             <View style={{backgroundColor:'white',elevation:8,paddingVertical:5,paddingHorizontal:15,borderRadius:8}}>
                 <Text style={{fontWeight:'bold',fontSize:18}}>{date.getDate()}/{date.getMonth()+1}/{date.getFullYear()}</Text>
             </View>
-           {openDate && <DateTimeModal mode='date' setOpen={setOpenDate} setValue={setDate}/>}
+           {openDate && <DateTimeModal mode='date' setOpen={setOpenDate} value={date} setValue={setDate}/>}
         </TouchableOpacity>
     )
 }
 
-function TimeInput(){
-    const [time,setTime] = useState(new Date());
+function TimeInput({time,setTime}){
+
     const [openTime,setOpenTime] = useState(false);
     return(
         <TouchableOpacity 
@@ -170,7 +211,7 @@ function TimeInput(){
             <View style={{backgroundColor:'white',elevation:8,padding:5,borderRadius:8}}>
                 <Text style={{fontWeight:'bold',fontSize:18}}>{time.getHours()}:{time.getMinutes()<10?"0"+time.getMinutes():time.getMinutes()}</Text>
             </View>
-           {openTime && <DateTimeModal mode='time' setOpen={setOpenTime} setValue={setTime}/>}
+           {openTime && <DateTimeModal mode='time' setOpen={setOpenTime} value={time} setValue={setTime}/>}
         </TouchableOpacity>
     )
 }
@@ -179,11 +220,17 @@ function DateTimeModal(props){
     return(
        <DateTimePicker
           testID="dateTimePicker"
-          value={new Date()}
+          value={props.value}
           mode={props.mode}
           is24Hour={true}
           display="spinner"
-          onChange={(value)=>{props.setOpen(false);props.setValue(new Date(Date.parse(value.nativeEvent.timestamp)))}}
+          onChange={(value)=>{
+                props.setOpen(false);
+                if(value.nativeEvent.timestamp){
+                    var ans=new Date(Date.parse(value.nativeEvent.timestamp));
+                    props.setValue(ans)
+                }
+            }}
         />
     )
 }

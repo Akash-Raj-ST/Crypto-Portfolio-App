@@ -1,7 +1,35 @@
 import React from 'react'
-import { View, Text, StyleSheet,TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet,TouchableOpacity, Alert } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
 export default function Info() {
+    const navigation = useNavigation();
+
+    const handleLogout = () => {
+        const logout = () =>{
+            navigation.navigate("Login");
+        }
+
+        Alert.alert(
+            "Are you Sure?",
+            "Do you want to Logout?",
+            [
+                {
+                    text:"Yes",
+                    style:"ok",
+                    onPress:()=>logout(),
+                },
+                {
+                    text:"No",
+                    style:"ok",
+                }
+            ],
+            {
+                cancelable:true
+            }
+        )
+    }
+
     return (
         <View
             style={{
@@ -9,6 +37,7 @@ export default function Info() {
                 alignItems:'center',
                 justifyContent:'space-between',
                 margin:30,
+                marginBottom:10
             }}
         >
             <Text
@@ -20,6 +49,7 @@ export default function Info() {
 
             <TouchableOpacity 
                 style={styles.button}
+                onPress={()=>{handleLogout()}}
             >
                 <Text style={styles.buttonText}>Log Out</Text>
             </TouchableOpacity>

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native'
 
 import Store from '../../Redux/store'
 
-export default function Statistics() {
+export default function Statistics({allAssets}) {
     const [bestPerformer,setBestPerformer] = useState({"currency":"","percent":0,"amount":0})
     const [worstPerformer,setWorstPerformer] = useState({"currency":"","percent":0,"amount":0})
 
@@ -11,7 +11,7 @@ export default function Statistics() {
         var bestPerformer={"currency":"","percent":0,"amount":0};
         var worstPerformer={"currency":"","percent":0,"amount":0};
 
-        const assets = Store.getState().allAsset;
+        const assets = allAssets;
 
         if(assets){
             assets.forEach((asset)=>{
@@ -25,10 +25,11 @@ export default function Statistics() {
                 }
             })
         }
-
+        console.log('home stats....');
+        
         setBestPerformer(bestPerformer);
         setWorstPerformer(worstPerformer);
-    },[])
+    },[allAssets])
 
     return (
         <View style={{marginBottom:10}}>

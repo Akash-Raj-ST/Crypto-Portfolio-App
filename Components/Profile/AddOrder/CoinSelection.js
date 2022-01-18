@@ -59,14 +59,14 @@ function Search(props){
 function CoinList(props){
     const coins = [
         {
-            currency:'Bitcoin',
+            currency:'BTC',
             logo:require("../../../assets/images/bitcoin.png")
         },
          {
-            currency:'Ethereum',
+            currency:'ETH',
             logo:require("../../../assets/images/bitcoin.png")
         }, {
-            currency:'Matic',
+            currency:'MAT',
             logo:require("../../../assets/images/bitcoin.png")
         },
     ]
