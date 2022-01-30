@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react'
-import { View, Text,TouchableOpacity,StyleSheet, Modal,TextInput, Image } from 'react-native'
+import { View, Text,TouchableOpacity,StyleSheet, Modal,TextInput, Image, Alert } from 'react-native'
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -8,6 +8,8 @@ import { doc, updateDoc, arrayUnion, getDoc } from 'firebase/firestore/lite';
 import {Timestamp} from 'firebase/firestore';
 
 import updateOrder from '../../../updateOrder';
+
+import Store from '../../../Redux/store';
 
 export default function OrderDetails(props){
 
@@ -20,7 +22,6 @@ export default function OrderDetails(props){
 
     const [activeTab,setActiveTab] = useState("Buy");
 
-
     useEffect(()=>{
         const amt = Number(quantity)*Number(price)
         setAmount(amt);
@@ -29,7 +30,20 @@ export default function OrderDetails(props){
     const addOrder =async()=>{
         if(amount<=0){
             console.log("Enter valid data for price and quantity");
-            return
+            Alert.alert(
+                "Oops!",
+                "Enter valid data for price and quantity",
+                [
+                    {
+                        text:"ok",
+                        style:"ok",
+                    }
+                ],
+                {
+                    cancelable:true
+                }
+            )
+            return;
         }
         const act_date = new Date(date.getFullYear(),date.getMonth(),date.getDate(),time.getHours(),time.getMinutes(),time.getSeconds())
         
@@ -40,6 +54,30 @@ export default function OrderDetails(props){
             total_quantity: Number(quantity),
             total_amount: Number(amount),
             price_per_unit: Number(price),
+        }
+        if(order.type=="sell"){
+            const assets = Store.getState().allAsset;
+
+            const curr_asset = assets.find((asset)=>{return asset.currency===order.currency});
+            console.log(curr_asset);
+
+            if(!curr_asset || curr_asset.total_quantity<order.total_quantity){
+                console.log("Insufficient quantity in your account");
+                Alert.alert(
+                    "Invalid Quantity",
+                    "Insufficient quantity in your account",
+                    [
+                        {
+                            text:"ok",
+                            style:"ok",
+                        }
+                    ],
+                    {
+                        cancelable:true
+                    }
+                )
+                return;
+            }
         }
 
         const userID = 'WFLOPtx94SwlicYt2sjF';
