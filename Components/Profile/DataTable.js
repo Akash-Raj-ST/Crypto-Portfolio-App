@@ -72,22 +72,20 @@ export default function DataTable() {
     }
 
     return (
-        <ScrollView vertical>
-            <ScrollView horizontal style={{marginTop:30}}> 
-                <ScrollView style={{flexDirection:'row'}}> 
-                    <Header handlers={handlers}/>
-                    <Divider/>
-                    <ScrollView vertical>
-                        {data.map((asset,index)=>(
-                            <View key={index} style={{paddingVertical:5}}>
-                                <AllData  asset={asset}/>
-                                <Divider width={2} color='#eee' style={{marginHorizontal:10}}/>
-                            </View>
-                        ))}
-                    </ScrollView>
+                <ScrollView style={{height:"60%"}} horizontal> 
+                    <View>  
+                        <Header handlers={handlers}/>
+                        <Divider/>
+                        <ScrollView vertical>
+                            {data.map((asset,index)=>(
+                                <View key={index} style={{paddingVertical:5}}>
+                                    <AllData  asset={asset}/>
+                                    <Divider width={2} color='#eee' style={{marginHorizontal:10}}/>
+                                </View>
+                            ))}
+                        </ScrollView>
+                    </View>
                 </ScrollView>
-            </ScrollView>
-        </ScrollView>
     )
 }
 
